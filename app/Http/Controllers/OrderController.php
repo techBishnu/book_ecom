@@ -106,7 +106,7 @@ class OrderController extends Controller
                 'website_url'=>route('index'),
                 // 'amount'=>$bill['price'] * 100,
                 'amount'=>10000,
-                'purchase_order_id'=>$order['order_Id'],
+                'purchase_order_id'=>$order['order_id'],
                 'purchase_order_name'=>'Order',
                 'customer_info'=>['email'=>$order['email'],'name' => $order['name']],
                 "modes"=>[
@@ -128,7 +128,7 @@ class OrderController extends Controller
             $headers = ['Authorization: Key ba0a86e38e464a4b9372b1e07d6280b4'];//secret key
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             // payment verification end
-    
+
             // Response
             $response = curl_exec($ch);
             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

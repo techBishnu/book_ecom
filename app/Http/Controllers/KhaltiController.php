@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -11,7 +12,7 @@ class KhaltiController extends Controller
     public function verifyKhalti(Request $request)
     {
         $data = $request->all();    
-        // $bill = \App\Models\Bill::where('unique_bill_id',$data['purchase_order_id'])->first();
+        $bill =Order::where('order_id',$data['purchase_order_id'])->first();
         if(array_key_exists('message',$data)){
             Alert::error('Error', $data['message']);
             return redirect()->route('welcome');
@@ -44,19 +45,20 @@ class KhaltiController extends Controller
         $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         $decodedResponse = json_decode($response);
+        // dd($response);
         if ($decodedResponse->status == 'Completed') {
-            // $bill->update([
-            //     'status' => 'Paid',
-            //     'gateway_response' => $response
-            // ]);
+            $bill->update([
+                'status_message' => 'Paid',
+                'online_res' => $response
+            ]);
             Alert::success('Successful','Payment Success');
-            return redirect()->route('homepage');
+            return redirect()->route('index');
         } else {
-            // $bill->update([
-            //     'status' => 'Unpaid'
-            // ]);
+            $bill->update([
+                'status_message' => 'Unpaid'
+            ]);
             Alert::error('Error', 'Something Went Wrong. Try again later.');
-            return redirect()->route('homepage');
+            return redirect()->route('index');
             
         }
     }
