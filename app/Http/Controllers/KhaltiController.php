@@ -52,7 +52,7 @@ class KhaltiController extends Controller
                 'online_res' => $response
             ]);
             Alert::success('Successful','Payment Success');
-            return redirect()->route('index');
+            return redirect()->route('thankyou');
         } else {
             $bill->update([
                 'status_message' => 'Unpaid'

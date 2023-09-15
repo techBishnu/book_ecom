@@ -122,6 +122,7 @@ Route::prefix('admin/')->middleware(['auth'])->group(function () {
     Route::post('orderList', [OrderController::class, 'filter_order'])->name('filter_order')->middleware(['role:Admin']);
     Route::get('orderItemList', [OrderController::class, 'orderItemList'])->name('orderItemList')->middleware(['role:Admin']);
     Route::get('statusUpdate', [OrderController::class, 'statusUpdate'])->name('statusUpdate')->middleware(['role:Admin']);
+    Route::get('generatepdf/{orderId}', [OrderController::class, 'generatepdf'])->name('generatepdf')->middleware(['role:Admin']);
 });
 
 Auth::routes();

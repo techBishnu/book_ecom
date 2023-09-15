@@ -41,12 +41,14 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Address</th>
-                <th>Pincode</th>
-                <th>Total</th>
-                <th>Online</th>
+                {{-- <th>Pincode</th> --}}
+                {{-- <th>Total</th> --}}
+                {{-- <th>Online</th> --}}
                 <th>Status</th>
                 <th>Payment Mode</th>
                 <th>Action</th>
+                <th>Pdf Generate</th>
+                <th>Pdf view</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,9 +59,9 @@
                     <td>{{$orderItem->name}}</td>
                     <td>{{ $orderItem->email}}</td>
                     <td>{{ $orderItem->address}}</td>
-                    <td>{{ $orderItem->pincode}}</td>
-                    <td>{{ $orderItem->total}}</td>
-                    <td>{!! $orderItem->online_res !!}</td>
+                    {{-- <td>{{ $orderItem->pincode}}</td> --}}
+                    {{-- <td>{{ $orderItem->total}}</td> --}}
+                    {{-- <td>{!! $orderItem->online_res !!}</td> --}}
                     <td>
                         <label>Change Status</label>
                         <form action="{{ route('statusChangeOrder',$orderItem->id) }}" method="post">
@@ -86,6 +88,12 @@
 
                         <a class="btn btn-danger btn-sm"
                             href="{{ route('orderview.delete',$orderItem->id) }}">Delete</a>
+                    </td>
+                    <td>
+                        <a href="{{ route('generatepdf',$orderItem->id) }}">Generate</a>
+                    </td>
+                    <td>
+                        <a href="{{ $orderItem->hasMedia('order_pdf') ? $orderItem->getMedia('order_pdf')[0]->getFullUrl():'' }}">view</a>
                     </td>
                     <div class="modal fade" id="myModal{{$orderItem->id  }}" role="dialog">
                         <div class="modal-dialog modal-xl">

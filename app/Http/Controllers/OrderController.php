@@ -6,6 +6,8 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Status;
+// use Barryvdh\DomPDF\PDF;
+use \PDF;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -13,9 +15,11 @@ use Illuminate\Support\Carbon;
 use App\Notifications\OrderNotify;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderFormRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Notifications\OrderPlacedNotify;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Notification;
+
 
 class OrderController extends Controller
 {
@@ -196,5 +200,52 @@ class OrderController extends Controller
             return $q->where('status_message',$request->status);
         })->get();
         return view('frontend.order.order',compact('order','status'));
+    }
+
+
+    public function generatepdf($orderId){
+        // dd($orderId);
+        try {
+            $order = Order::where('id', $orderId)->first();
+            $this->generateOrderPdf($order);
+            Alert::success('Success', 'Order PDF Generated');
+            return back();
+        } catch (Throwable $e) {
+            Alert::error('error', 'Oops! Something Went Wrong.');
+            return back();
+        }
+    }
+
+    public function generateOrderPdf($createdOrder)
+    {
+
+        $logo = null;
+        $order=Order::find($createdOrder->id);
+        $orderProduct=OrderItem::where('order_id',$createdOrder->id)->get();
+        if ($orderProduct != null) {
+          
+
+            foreach ($orderProduct as $key => $o_p) {
+                $prod = Book::where('id', $o_p['book_id'])->with('media')->first();
+                $o_p['thumbnai'] = '';
+                if ($prod && count($prod->getMedia('book_image')) > 0) {
+                    $o_p['thumbnai'] = public_path() . '/' . 'storage' . '/' . $prod->getMedia('book_image')[0]['id'] . '/' . $prod->getMedia('book_image')[0]['file_name'];
+                }
+            }
+
+
+            if (!is_dir(storage_path() . '/app' . '/public' . '/pdf')) {
+                mkdir(storage_path() . '/app' . '/public' . '/pdf');
+            }
+            // dd($order->order_id);
+            $pdf = PDF::loadView('pdf.orderpdf', compact('order', 'orderProduct', 'logo'));
+            $pdf_data = $pdf->download()->getOriginalContent();
+    
+            $fileName = $order->order_id . '.' . 'pdf';
+            Storage::put('public/pdf/' . $fileName, $pdf_data);
+            $get_pdf_path = public_path('storage/pdf/' . $fileName);
+            $createdOrder->addMedia($get_pdf_path)->toMediaCollection('order_pdf');
+
+        }
     }
 }
