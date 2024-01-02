@@ -10,14 +10,14 @@
         <div class="row">
             <div class="col-md-3">
                 <label for="">Filter By Date</label>
-                <input type="date" name="date" value="{{ date('Y-m-d') }}"   class="form-control">
+                <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control">
             </div>
             <div class="col-md-3">
                 <label for="">Filter By Status</label>
                 <select name="status" class="form-control">
                     <option value="">Select Status</option>
                     @foreach ($status as $statu)
-                    <option value="{{ $statu->name }}"  >{{ $statu->name }}</option>
+                    <option value="{{ $statu->name }}">{{ $statu->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -48,11 +48,10 @@
                 <th>Payment Mode</th>
                 <th>Action</th>
                 <th>Pdf Generate</th>
-                <th>Pdf view</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($order as $orderItem)
+                @foreach ($order as $key=> $orderItem)
                 <tr>
 
                     <td>{{ $orderItem->id }}</td>
@@ -90,11 +89,43 @@
                             href="{{ route('orderview.delete',$orderItem->id) }}">Delete</a>
                     </td>
                     <td>
-                        <a href="{{ route('generatepdf',$orderItem->id) }}">Generate</a>
+                        @if ($orderItem->hasMedia('order_pdf'))
+                        <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $key }}">view</a>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ $key }}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class=" btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                                           X
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row" style="height:500px;width:100%;">
+
+                                                <embed style="height:100%;width:100%;" class="img-fluid"
+                                                    src="{{ $orderItem->hasMedia('order_pdf') ? $orderItem->getMedia('order_pdf')[0]->getFullUrl():'' }}"
+                                                    type="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <a class="btn btn-secondary" href="{{ route('generatepdf',$orderItem->id) }}">Generate</a>
+                        @endif
                     </td>
-                    <td>
-                        <a href="{{ $orderItem->hasMedia('order_pdf') ? $orderItem->getMedia('order_pdf')[0]->getFullUrl():'' }}">view</a>
-                    </td>
+                    
                     <div class="modal fade" id="myModal{{$orderItem->id  }}" role="dialog">
                         <div class="modal-dialog modal-xl">
 
@@ -148,10 +179,10 @@
 
                                                 @endif
                                                 <br>
-                                                @php
+                                                {{-- @php
 
                                                 $total +=$item->price*$item->quantity;
-                                                @endphp
+                                                @endphp --}}
                                             </div>
                                         </div>
                                     </div>

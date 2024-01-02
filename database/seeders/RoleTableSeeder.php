@@ -14,19 +14,19 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        // $roles=[
-        //     [
-        //         'name'=>'Admin',
-        //         'guard_name'=>'web',
-        //     ],
-        //     [
-        //         'name'=>'User',
-        //         'guard_name'=>'web',
-        //     ],
-        // ];
-        // foreach($roles as $role){
-        //     Role::create($role);
-        // }
+        $roles=[
+            [
+                'name'=>'Admin',
+                'guard_name'=>'web',
+            ],
+            [
+                'name'=>'User',
+                'guard_name'=>'web',
+            ],
+        ];
+        foreach($roles as $role){
+            Role::create($role);
+        }
        Role::create(['name'=>'editor']);
     }
 }

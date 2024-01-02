@@ -90,6 +90,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="sharethis-inline-share-buttons mt-3"></div>
+                            
                         </div>
                     </div>
                 </div>

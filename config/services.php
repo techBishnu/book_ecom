@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -29,5 +28,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'twitter' => [
+        'client_id' => 'cFZic0VMVUNmRXRlNXFFeEtZdm86MTpjaQ',
+        'client_secret' => 'c11gARgrNeX3eUqm7Y4FMlLsfsmg1sFoKRamOULtzdYDFwTs7I',
+        'redirect' => 'http://localhost:8000/auth/twitter/callback',
+    ],
 ];

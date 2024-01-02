@@ -45,6 +45,7 @@ class EsewaController extends Controller
                         'book_id'=>$item['id'],
                         'quantity'=>$item['quantity'],
                         'price'=>$item['price'],
+                        'total'=>$item['quantity']*$item['price']
                         
                     ]);
                         $book=Book::find($item['id']);
@@ -62,7 +63,7 @@ class EsewaController extends Controller
                 $data['pincode']=$order->pincode;
                 $data['payment_mode']=$order->payment_mode;
                 Notification::route('mail', 'admin@gmail.com')->notify(new OrderNotify($data));
-                Notification::send( User::where('id',10)->first(), new OrderPlacedNotify($data));
+                Notification::send( auth()->user(), new OrderPlacedNotify($data));
                 Alert::success('Success', 'Your Order successfully Placed' );
 
                 return redirect()->route('thankyou');

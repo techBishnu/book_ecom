@@ -19,6 +19,7 @@ class OrderItem extends Model  implements HasMedia
         'book_id',
         'quantity',
         'price',
+        'total'
     ];
     public function book(){
        return $this->belongsTo(Book::class,);

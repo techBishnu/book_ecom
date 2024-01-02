@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'twitter_id',
     ];
     public function userDetail(){
         return $this->belongsTo(UserDetail::class);
@@ -40,6 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**

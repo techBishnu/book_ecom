@@ -71,6 +71,7 @@ class OrderController extends Controller
                     'book_id'=>$item['id'],
                     'quantity'=>$item['quantity'],
                     'price'=>$item['price'],
+                    'total'=>$item['quantity']*$item['price'],
                     
                 ]);
                     $book=Book::find($item['id']);
@@ -90,7 +91,7 @@ class OrderController extends Controller
                 $test ['total']=$totalOI;
 
                 Notification::route('mail', 'admin@gmail.com')->notify(new OrderNotify($data));
-                Notification::send( User::where('id',10)->first(), new OrderPlacedNotify($test));
+                Notification::send(auth()->user(), new OrderPlacedNotify($test));
         
             }
         
@@ -242,6 +243,7 @@ class OrderController extends Controller
             $pdf_data = $pdf->download()->getOriginalContent();
     
             $fileName = $order->order_id . '.' . 'pdf';
+            
             Storage::put('public/pdf/' . $fileName, $pdf_data);
             $get_pdf_path = public_path('storage/pdf/' . $fileName);
             $createdOrder->addMedia($get_pdf_path)->toMediaCollection('order_pdf');

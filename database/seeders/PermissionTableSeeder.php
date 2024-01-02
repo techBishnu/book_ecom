@@ -43,10 +43,10 @@ class PermissionTableSeeder extends Seeder
         // Permission::create(['name'=>'view.author']);
         // Permission::create(['name'=>'update.author']);
         // Permission::create(['name'=>'delete.author']);
-        Permission::firstOrCreate(['name' => 'view', 'module' => 'Testing', 'guard_name' => 'web']);
-        Permission::firstOrCreate(['name' => 'delete', 'module' => 'Testing', 'guard_name' => 'web']);
-        Permission::firstOrCreate(['name' => 'store', 'module' => 'Testing', 'guard_name' => 'web']);
-        Permission::firstOrCreate(['name' => 'update', 'module' => 'Testing', 'guard_name' => 'web']);
+        // Permission::firstOrCreate(['name' => 'view', 'module' => 'Testing', 'guard_name' => 'web']);
+        // Permission::firstOrCreate(['name' => 'delete', 'module' => 'Testing', 'guard_name' => 'web']);
+        // Permission::firstOrCreate(['name' => 'store', 'module' => 'Testing', 'guard_name' => 'web']);
+        // Permission::firstOrCreate(['name' => 'update', 'module' => 'Testing', 'guard_name' => 'web']);
 
 
 

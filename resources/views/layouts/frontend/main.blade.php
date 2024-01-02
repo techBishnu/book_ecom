@@ -67,7 +67,8 @@
     
         <hr>
     @include('layouts.frontend.footer')
-    <script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6541e7ba8ffb84001a73d713&product=inline-share-buttons&source=platform" async="async"></script>
+  <script>
           var availableTags = [];
           $.ajax({
               method:"GET",
